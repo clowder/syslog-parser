@@ -6,16 +6,14 @@ module Syslog
       def initialize(options={})
         super()
 
-        @allow_missing_structured_data =
-          options.fetch(:allow_missing_structured_data, false)
+        @allow_missing_structured_data = options.fetch(:allow_missing_structured_data, false)
       end
 
       root :syslog_msg
 
       rule :syslog_msg do
         if @allow_missing_structured_data
-          (header >> (sp >> structured_data).maybe >> (sp >> msg).maybe)
-            .as(:syslog_msg)
+          (header >> (sp >> msg).maybe).as(:syslog_msg)
         else
           (header >> sp >> structured_data >> (sp >> msg).maybe).as(:syslog_msg)
         end
