@@ -18,9 +18,9 @@ class ParserTest < Minitest::Test
     )
     assert_equal "mymachine.example.com", message.hostname
     assert_equal "su", message.app_name
-    assert_equal nil, message.procid
+    assert_nil message.procid
     assert_equal "ID47", message.msgid
-    assert_equal nil, message.structured_data
+    assert_nil message.structured_data
     assert_equal "'su root' failed for lonvick on /dev/pts/8", message.msg
 
     line = "<165>1 2003-08-24T05:14:15.000003-07:00 192.0.2.1 myproc 8710 - "\
@@ -38,8 +38,8 @@ class ParserTest < Minitest::Test
     assert_equal "192.0.2.1", message.hostname
     assert_equal "myproc", message.app_name
     assert_equal "8710", message.procid
-    assert_equal nil, message.msgid
-    assert_equal nil, message.structured_data
+    assert_nil message.msgid
+    assert_nil message.structured_data
     assert_equal "%% It's time to make the do-nuts.", message.msg
   end
 
@@ -61,7 +61,7 @@ class ParserTest < Minitest::Test
     )
     assert_equal "mymachine.example.com", message.hostname
     assert_equal "evntslog", message.app_name
-    assert_equal nil, message.procid
+    assert_nil message.procid
     assert_equal "ID47", message.msgid
     assert_equal 1, message.structured_data.length
     assert_equal "exampleSDID@32473", message.structured_data[0].id
@@ -92,7 +92,7 @@ class ParserTest < Minitest::Test
     )
     assert_equal "mymachine.example.com", message.hostname
     assert_equal "evntslog", message.app_name
-    assert_equal nil, message.procid
+    assert_nil message.procid
     assert_equal "ID47", message.msgid
     assert_equal 2, message.structured_data.length
     assert_equal "exampleSDID@32473", message.structured_data[0].id
@@ -105,7 +105,7 @@ class ParserTest < Minitest::Test
     assert_equal "examplePriority@32473", message.structured_data[1].id
     params = { "class" => "high" }
     assert_equal params, message.structured_data[1].params
-    assert_equal nil, message.msg
+    assert_nil message.msg
   end
 
   def test_escaping_in_param_value
@@ -125,13 +125,13 @@ class ParserTest < Minitest::Test
     )
     assert_equal "mymachine.example.com", message.hostname
     assert_equal "evntslog", message.app_name
-    assert_equal nil, message.procid
+    assert_nil message.procid
     assert_equal "ID47", message.msgid
     assert_equal 1, message.structured_data.length
     assert_equal "exampleSDID@32473", message.structured_data[0].id
     params = { "escape" => "\"\\\\\]" }
     assert_equal params, message.structured_data[0].params
-    assert_equal nil, message.msg
+    assert_nil message.msg
   end
 
   def test_malformed_message
@@ -162,8 +162,8 @@ class ParserTest < Minitest::Test
     assert_equal "host", message.hostname
     assert_equal "app", message.app_name
     assert_equal "web.3", message.procid
-    assert_equal nil, message.msgid
-    assert_equal nil, message.structured_data
+    assert_nil message.msgid
+    assert_nil message.structured_data
     assert_equal "State changed from starting to up", message.msg
   end
 
@@ -174,10 +174,10 @@ class ParserTest < Minitest::Test
       '[id param_name="param_value"] msg'
     message = parser.parse(line)
 
-    assert_equal Fixnum, message.prival.class
-    assert_equal Fixnum, message.facility.class
-    assert_equal Fixnum, message.severity.class
-    assert_equal Fixnum, message.version.class
+    assert_equal Integer, message.prival.class
+    assert_equal Integer, message.facility.class
+    assert_equal Integer, message.severity.class
+    assert_equal Integer, message.version.class
     assert_equal Time, message.timestamp.class
     assert_equal String, message.hostname.class
     assert_equal String, message.app_name.class
